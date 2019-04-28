@@ -16,7 +16,6 @@ def adaptive_gaussian(matrix, block_size=11, c=2):
 
 _THRESHOLD_FUNCTION_MAP = {
     'simple': simple,
-    'simple_inv': simple_inv,
     'otsu': otsu,
     'adaptive_gaussian': adaptive_gaussian
 }
