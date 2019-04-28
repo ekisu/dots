@@ -27,7 +27,7 @@ def function_args(args_string: str) -> Tuple[List[Any], Dict[str, Any]]:
 def create_argument_parser() -> ArgumentParser:
     parser = ArgumentParser()
     parser.add_argument("image_path", type=Path)
-    parser.add_argument("--threshold", type=threshold_function, default='otsu')
+    parser.add_argument("--threshold", type=threshold_function, default='adaptive_gaussian')
     parser.add_argument("--threshold-args", type=function_args, default='')
     parser.add_argument("--output", type=output_function, default='braille_3x2')
     parser.add_argument("--invert", action='store_true', default=False)
