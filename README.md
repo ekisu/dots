@@ -1,4 +1,4 @@
-# dots
+# dots [![Build Status](https://travis-ci.com/ekisu/dots.svg?branch=master)](https://travis-ci.com/ekisu/dots)
 
 A simple utility to convert an image into a braille text representation.
 
