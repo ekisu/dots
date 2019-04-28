@@ -26,12 +26,17 @@ def function_args(args_string: str) -> Tuple[List[Any], Dict[str, Any]]:
 
 def create_argument_parser() -> ArgumentParser:
     parser = ArgumentParser()
-    parser.add_argument("image_path", type=Path)
-    parser.add_argument("--threshold", type=threshold_function, default='adaptive_gaussian')
-    parser.add_argument("--threshold-args", type=function_args, default='')
-    parser.add_argument("--output", type=output_function, default='braille_3x2')
-    parser.add_argument("--invert", action='store_true', default=False)
-    parser.add_argument("--resize-factor", type=float, default=1)
+    parser.add_argument("image_path", type=Path, help="path to the image")
+    parser.add_argument("--threshold", type=threshold_function, default='adaptive_gaussian',
+                        help="function used to binarize the image. can be one of: simple, otsu, adaptive_gaussian")
+    parser.add_argument("--threshold-args", type=function_args, default='',
+                        help="comma-separated arguments to the threshold function. k=v pairs will be passed as kwargs; other values as args.")
+    parser.add_argument("--output", type=output_function, default='braille_3x2',
+                        help="function used to output the binarized matrix. can be one of: braille_3x2, braille_4x2")
+    parser.add_argument("--invert", action='store_true', default=False,
+                        help="whether to invert the colors on the output or not.")
+    parser.add_argument("--resize-factor", type=float, default=1,
+                        help="the factor which the image will be resized, defaults to 1")
     return parser
 
 def main(image_path: Path,
