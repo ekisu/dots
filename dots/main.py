@@ -33,8 +33,10 @@ def create_argument_parser() -> ArgumentParser:
                         help="comma-separated arguments to the threshold function. k=v pairs will be passed as kwargs; other values as args.")
     parser.add_argument("--output", type=output_function, default='braille_3x2',
                         help="function used to output the binarized matrix. can be one of: braille_3x2, braille_4x2")
-    parser.add_argument("--invert", action='store_true', default=False,
+    parser.add_argument("--invert", action='store_true',
                         help="whether to invert the colors on the output or not.")
+    parser.add_argument("--no-transparency-mask", action='store_true',
+                        help="don't always emit transparent pixels as spaces.")
     parser.add_argument("--resize-factor", type=float, default=1,
                         help="the factor which the image will be resized, defaults to 1")
     return parser
@@ -44,14 +46,24 @@ def main(image_path: Path,
     threshold: Callable[[int], Any],
     threshold_args: Tuple[List[Any], Dict[str, Any]],
     invert: bool,
+    no_transparency_mask: bool,
     output: Callable[[Any], List[str]]):
     loader = ImageLoader(image_path)
+    loader.resize_with_factor(resize_factor)
+
     grayscale_image = loader.as_grayscale()
-    resized_image = resize_with_factor(grayscale_image, resize_factor)
+    
+    transparency_mask = loader.transparency_mask()
+
     t_args, t_kwargs = threshold_args
-    binary_matrix = threshold(resized_image, *t_args, **t_kwargs)
+    binary_matrix = threshold(grayscale_image, *t_args, **t_kwargs)
+
     if invert:
         binary_matrix = np.invert(binary_matrix)
+    
+    if not no_transparency_mask:
+        binary_matrix = np.logical_and(binary_matrix, transparency_mask)
+    
     lines = output(binary_matrix)
 
     print('\n'.join(lines))
