@@ -23,3 +23,11 @@ Run the program with:
 ```
 
 It will output the braille representation to stdout.
+
+## Example
+
+### Original:
+![Original image](/img/image.png)
+
+### Text version
+![Text version](/img/image_dots.png)
