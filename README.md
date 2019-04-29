@@ -12,14 +12,14 @@ foo@bar:~$ venv/bin/activate
 
 Install the project requirements:
 ```console
-(venv) foo@bar:~$ pip install -r requirements.txt
+(venv) foo@bar:~/dots$ pip install -r requirements.txt
 ```
 
 ## Usage
 
 Run the program with:
 ```console
-(venv) foo@bar:~$ python -m dots.main path/to/image.jpg
+(venv) foo@bar:~/dots$ python -m dots.main path/to/image.jpg
 ```
 
 It will output the braille representation to stdout.
@@ -30,4 +30,10 @@ It will output the braille representation to stdout.
 ![Original image](/img/image.png)
 
 ### Text version:
+
+Generated with:
+```console
+(venv) foo@bar:~/dots$ python -m dots.main img/image.png --output braille_4x2 --invert --resize-factor 0.4
+```
+
 ![Text version](/img/image_dots.png)
