@@ -23,7 +23,7 @@ class TestImageLoader(unittest.TestCase):
         self.assertTrue((image.as_grayscale() == expected_grayscale).all())
 
     def test_transparency_mask(self):
-        image = ImageLoader(asset_path_builder("2x1_transparency_test.png"))
+        image = ImageLoader(asset_path_builder("2x1_opaque_transparent.png"))
         expected_transparency_mask = np.array([
             [False, True]
         ])
