@@ -73,7 +73,7 @@ def main(image_path: Path,
         binary_matrix = np.invert(binary_matrix)
     
     if not no_transparency_mask:
-        binary_matrix = np.logical_and(binary_matrix, transparency_mask)
+        binary_matrix = np.logical_and(binary_matrix, np.invert(transparency_mask))
     
     o_args, o_kwargs = output_args
     lines = output(binary_matrix, *o_args, **o_kwargs)

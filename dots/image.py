@@ -20,7 +20,7 @@ class ImageLoader(object):
         if channels < 4: # No alpha channel?
             return np.full((w, h), True)
         
-        return self.image[:,:,3] > transparency_threshold
+        return self.image[:,:,3] < transparency_threshold
 
 def resize_with_factor(image, factor):
     if factor == 1:
