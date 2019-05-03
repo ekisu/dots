@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<h1 class="title">dots.</h1>
+<p>Convert any image into a braille text representation!</p>
+
+<form action="{{ url_for('routes.convert') }}" method="POST">
+    <div class="file">
+        <label class="file-label">
+            <input class="file-input" type="file" name="image">
+            <span class="file-cta">
+                <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                    Choose an image…
+                </span>
+            </span>
+        </label>
+    </div>
+</form>
+{% endblock %}
