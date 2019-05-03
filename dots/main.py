@@ -9,7 +9,15 @@ from ast import literal_eval
 
 import numpy as np
 
-def function_args(args_string: str) -> Tuple[List[Any], Dict[str, Any]]:
+FunctionArgs = Tuple[List[Any], Dict[str, Any]]
+
+def function_args(args_string: str) -> FunctionArgs:
+    def _parse_value(v):
+        try:
+            return literal_eval(v)
+        except:
+            return v
+    
     args: List[Any] = []
     kwargs: Dict[str, Any] = {}
 
@@ -18,9 +26,9 @@ def function_args(args_string: str) -> Tuple[List[Any], Dict[str, Any]]:
         
         if '=' in arg:
             [k, v] = arg.split('=')
-            kwargs[k] = literal_eval(v)
+            kwargs[k] = _parse_value(v)
         else:
-            args.append(literal_eval(arg))
+            args.append(_parse_value(v))
     
     return args, kwargs
 
@@ -33,6 +41,8 @@ def create_argument_parser() -> ArgumentParser:
                         help="comma-separated arguments to the threshold function. k=v pairs will be passed as kwargs; other values as args.")
     parser.add_argument("--output", type=output_function, default='braille_3x2',
                         help="function used to output the binarized matrix. can be one of: braille_3x2, braille_4x2")
+    parser.add_argument("--output-args", type=function_args, default='',
+                        help="comma-separated arguments to the output function. k=v pairs will be passed as kwargs; other values as args.")
     parser.add_argument("--invert", action='store_true',
                         help="whether to invert the colors on the output or not.")
     parser.add_argument("--no-transparency-mask", action='store_true',
@@ -44,10 +54,11 @@ def create_argument_parser() -> ArgumentParser:
 def main(image_path: Path,
     resize_factor: float,
     threshold: Callable[[int], Any],
-    threshold_args: Tuple[List[Any], Dict[str, Any]],
+    threshold_args: FunctionArgs,
     invert: bool,
     no_transparency_mask: bool,
-    output: Callable[[Any], List[str]]):
+    output: Callable[[Any], List[str]],
+    output_args: FunctionArgs):
     loader = ImageLoader(image_path)
     loader.resize_with_factor(resize_factor)
 
@@ -64,7 +75,8 @@ def main(image_path: Path,
     if not no_transparency_mask:
         binary_matrix = np.logical_and(binary_matrix, transparency_mask)
     
-    lines = output(binary_matrix)
+    o_args, o_kwargs = output_args
+    lines = output(binary_matrix, *o_args, **o_kwargs)
 
     print('\n'.join(lines))
 

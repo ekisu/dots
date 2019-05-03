@@ -1,5 +1,7 @@
 from typing import List, Dict
 
+_BRAILLE_BASE = 0x2800
+
 def _braille_create_lines(binary_matrix,
                           y_step: int,
                           x_step: int,
@@ -17,7 +19,7 @@ def _braille_create_lines(binary_matrix,
                     # This position might not exist, but it's okay.
                     except IndexError:
                         pass
-            output_line += chr(0x2800 + offset)
+            output_line += chr(_BRAILLE_BASE + offset)
         output_lines.append(output_line)
     return output_lines
 
@@ -34,11 +36,17 @@ _BRAILLE_DOT_MAP: List[List[int]] = [
     [0x40, 0x80]
 ]
 
-def braille_3x2(binary_matrix) -> List[str]:
-    return _braille_create_lines(binary_matrix, 3, 2, _BRAILLE_DOT_MAP)
+def _braille(binary_matrix, height_per_char, blank_substitution=None) -> List[str]:
+    braille_text = _braille_create_lines(binary_matrix, height_per_char, 2, _BRAILLE_DOT_MAP)
+    if blank_substitution is not None:
+        braille_text = [line.replace(chr(_BRAILLE_BASE), blank_substitution) for line in braille_text]
+    return braille_text
 
-def braille_4x2(binary_matrix) -> List[str]:
-    return _braille_create_lines(binary_matrix, 4, 2, _BRAILLE_DOT_MAP)
+def braille_3x2(binary_matrix, blank_substitution=None) -> List[str]:
+    return _braille(binary_matrix, 3, blank_substitution)
+
+def braille_4x2(binary_matrix, blank_substitution=None) -> List[str]:
+    return _braille(binary_matrix, 4, blank_substitution)
 
 _OUTPUT_FUNCTION_MAP = {
     'braille_3x2': braille_3x2,
