@@ -19,7 +19,7 @@ Install the project requirements:
 
 Run the program with:
 ```console
-(venv) foo@bar:~/dots$ python -m dots.main path/to/image.jpg
+(venv) foo@bar:~/dots$ python -m dots.cli path/to/image.jpg
 ```
 
 It will output the braille representation to stdout.
@@ -33,7 +33,7 @@ It will output the braille representation to stdout.
 
 Generated with:
 ```console
-(venv) foo@bar:~/dots$ python -m dots.main img/image.png --output braille_4x2 --invert --resize-factor 0.4
+(venv) foo@bar:~/dots$ python -m dots.cli img/image.png --output braille_4x2 --invert --resize-factor 0.4
 ```
 
 ![Text version](/img/image_dots.png)
