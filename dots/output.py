@@ -1,5 +1,13 @@
 from typing import List, Dict
 
+_OUTPUT_FUNCTION_MAP = {}
+
+def output(description):
+    def _output_decorator(f):
+        _OUTPUT_FUNCTION_MAP[f.__name__] = (f, description)
+        return f
+    return _output_decorator
+
 _BRAILLE_BASE = 0x2800
 
 def _braille_create_lines(binary_matrix,
@@ -42,16 +50,17 @@ def _braille(binary_matrix, height_per_char, blank_substitution=None) -> List[st
         braille_text = [line.replace(chr(_BRAILLE_BASE), blank_substitution) for line in braille_text]
     return braille_text
 
+@output("Braille (3x2 grid)")
 def braille_3x2(binary_matrix, blank_substitution=None) -> List[str]:
     return _braille(binary_matrix, 3, blank_substitution)
 
+@output("Braille (4x2 grid)")
 def braille_4x2(binary_matrix, blank_substitution=None) -> List[str]:
     return _braille(binary_matrix, 4, blank_substitution)
 
-_OUTPUT_FUNCTION_MAP = {
-    'braille_3x2': braille_3x2,
-    'braille_4x2': braille_4x2
-}
-
 def output_function(name):
-    return _OUTPUT_FUNCTION_MAP[name]
+    function, _desc = _OUTPUT_FUNCTION_MAP[name]
+    return function
+
+def available_threshold_functions():
+    return list(_OUTPUT_FUNCTION_MAP.items())
