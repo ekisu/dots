@@ -62,5 +62,5 @@ def output_function(name):
     function, _desc = _OUTPUT_FUNCTION_MAP[name]
     return function
 
-def available_threshold_functions():
+def available_output_functions():
     return list(_OUTPUT_FUNCTION_MAP.items())
