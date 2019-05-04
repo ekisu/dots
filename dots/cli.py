@@ -59,7 +59,7 @@ def main(image_path: Path,
     no_transparency_mask: bool,
     output: Callable[[Any], List[str]],
     output_args: FunctionArgs):
-    loader = ImageLoader(image_path)
+    loader = ImageLoader.from_path(image_path)
     loader.resize_with_factor(resize_factor)
 
     grayscale_image = loader.as_grayscale()

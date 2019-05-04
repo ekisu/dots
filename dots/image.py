@@ -3,9 +3,21 @@ import numpy as np
 import cv2
 
 class ImageLoader(object):
-    def __init__(self, path: Path):
-        self.path: Path = path
-        self.image = cv2.imread(self.path.resolve().as_posix(), cv2.IMREAD_UNCHANGED)
+    def __init__(self, image):
+        if type(image) is type(None):
+            raise RuntimeError("image == None")
+        self.image = image
+    
+    @classmethod
+    def from_path(cls, path: Path):
+        image = cv2.imread(path.resolve().as_posix(), cv2.IMREAD_UNCHANGED)
+        return cls(image)
+    
+    @classmethod
+    def from_bytes(cls, bytes):
+        data_array = np.asarray(bytearray(bytes), dtype=np.uint8)
+        image = cv2.imdecode(data_array, cv2.IMREAD_UNCHANGED)
+        return cls(image)
     
     def resize_with_factor(self, factor: float):
         if factor == 1:
