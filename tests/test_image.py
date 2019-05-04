@@ -37,12 +37,11 @@ class TestImageLoader(unittest.TestCase):
     def test_from_bytes(self):
         # PPM file
         ppm_data_black_white = (
-            b"P3\n"
-            b"2 1\n"
-            b"255\n"
+            b"P3\n" # PPM header
+            b"2 1\n" # 2x1
+            b"255\n" # Maximum value
             b"0 0 0 255 255 255\n"
         )
-        print(ppm_data_black_white)
         image = ImageLoader.from_bytes(ppm_data_black_white)
         expected_grayscale = np.array([
             [0, 255]
