@@ -3,22 +3,45 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 class="title">dots.</h1>
-<p>Convert any image into a braille text representation!</p>
+<section class="hero is-fullheight">
+    <div class="hero-body">        
+        <div class="container has-text-centered">
+            <h1 class="title">dots.</h1>
+            <h2 class="subtitle">Convert any image into a braille text representation!</h2>
 
-<form action="{{ url_for('routes.convert') }}" method="POST">
-    <div class="file">
-        <label class="file-label">
-            <input class="file-input" type="file" name="image">
-            <span class="file-cta">
-                <span class="file-icon">
-                    <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label">
-                    Choose an image…
-                </span>
-            </span>
-        </label>
+            <div class="columns">
+                <div class="column">
+                    <textarea class="textarea" rows="15"></textarea>
+                </div>
+                <div class="column is-narrow">
+                    <form action="{{ url_for('routes.convert') }}" method="POST" enctype="multipart/form-data">
+                        <div class="field">
+                            <div class="control">
+                                <div class="file">
+                                    <label class="file-label">
+                                        <input class="file-input" type="file" name="image">
+                                        <span class="file-cta">
+                                            <span class="file-icon">
+                                                <i class="fas fa-upload"></i>
+                                            </span>
+                                            <span class="file-label">
+                                                Choose an image…
+                                            </span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="button is-primary">Submit!</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</form>
+</section>
 {% endblock %}
