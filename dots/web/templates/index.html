@@ -16,8 +16,8 @@
                 <div class="column is-narrow">
                     <form action="{{ url_for('routes.convert') }}" method="POST" enctype="multipart/form-data">
                         <div class="field">
-                            <div class="control">
-                                <div class="file">
+                            <div class="control is-expanded">
+                                <div class="file is-centered">
                                     <label class="file-label">
                                         <input class="file-input" type="file" name="image">
                                         <span class="file-cta">
@@ -32,9 +32,42 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="field">
+                            <label class="label">Threshold function</label>
+                            <div class="control is-expanded">
+                                <div class="select is-fullwidth">
+                                    <select name="threshold_function">
+                                        {% for func_name, (_, func_desc) in threshold_functions %}
+                                        <option value="{{ func_name }}">{{ func_desc }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Output function</label>
+                            <div class="control is-expanded">
+                                <div class="select is-fullwidth">
+                                    <select name="output_function">
+                                        {% for func_name, (_, func_desc) in output_functions %}
+                                        <option value="{{ func_name }}">{{ func_desc }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Resize factor</label>
+                            <div class="control is-expanded">
+                                <input class="is-fullwidth" type="range" name="resize_factor">
+                            </div>
+                        </div>
                         
                         <div class="field">
-                            <div class="control">
+                            <div class="control has-text-centered">
                                 <button type="submit" class="button is-primary">Submit!</button>
                             </div>
                         </div>

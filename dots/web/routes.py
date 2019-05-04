@@ -1,13 +1,15 @@
 from flask import Blueprint, render_template, abort, request
 from ..image import ImageLoader
-from ..threshold import threshold_function
-from ..output import output_function
+from ..threshold import threshold_function, available_threshold_functions
+from ..output import output_function, available_output_functions
 
 bp = Blueprint('routes', __name__)
 
 @bp.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html",
+        threshold_functions = available_threshold_functions(),
+        output_functions = available_output_functions())
 
 @bp.route("/convert", methods=["POST"])
 def convert():
