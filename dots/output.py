@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List
 
 _OUTPUT_FUNCTION_MAP = {}
 
@@ -16,7 +16,7 @@ _BRAILLE_BASE = 0x2800
 def _braille_create_lines(binary_matrix,
                           y_step: int,
                           x_step: int,
-                          dot_map: Dict[int, int]) -> List[str]:
+                          dot_map: List[List[int]]) -> List[str]:
     output_lines: List[str] = []
     for y_pos in range(0, len(binary_matrix), y_step):
         output_line: str = ""
