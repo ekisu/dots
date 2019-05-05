@@ -2,6 +2,7 @@ import unittest
 from dots.output import braille_3x2, braille_4x2, output_function
 import numpy as np
 
+
 class TestBraille3x2(unittest.TestCase):
     def test_single_line(self):
         input_matrix = np.array([
@@ -10,7 +11,7 @@ class TestBraille3x2(unittest.TestCase):
         output = braille_3x2(input_matrix)
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], "⠉⠉")
-    
+
     def test_single_column(self):
         input_matrix = np.array([
             [True],
@@ -41,6 +42,7 @@ class TestBraille3x2(unittest.TestCase):
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], "⠉⠉")
 
+
 class TestBraille4x2(unittest.TestCase):
     def test_single_line(self):
         input_matrix = np.array([
@@ -49,7 +51,7 @@ class TestBraille4x2(unittest.TestCase):
         output = braille_4x2(input_matrix)
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], "⠉⠉")
-    
+
     def test_single_column(self):
         input_matrix = np.array([
             [True],
@@ -60,7 +62,7 @@ class TestBraille4x2(unittest.TestCase):
         output = braille_4x2(input_matrix)
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], "⡇")
-    
+
     def test_blank_substitution(self):
         input_matrix = np.array([
             [False, False, True, True],
@@ -72,7 +74,7 @@ class TestBraille4x2(unittest.TestCase):
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0][0], 'X')
         self.assertNotEqual(output[0][1], 'X')
-    
+
     def test_via_output_function(self):
         input_matrix = np.array([
             [True, True, True, True]
@@ -81,6 +83,7 @@ class TestBraille4x2(unittest.TestCase):
         output = output_fn(input_matrix)
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0], "⠉⠉")
+
 
 if __name__ == "__main__":
     unittest.main()

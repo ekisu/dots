@@ -1,6 +1,7 @@
-from typing import List, Dict
+from typing import List
 
 _OUTPUT_FUNCTION_MAP = {}
+
 
 def output(description):
     def _output_decorator(f):
@@ -8,12 +9,14 @@ def output(description):
         return f
     return _output_decorator
 
+
 _BRAILLE_BASE = 0x2800
+
 
 def _braille_create_lines(binary_matrix,
                           y_step: int,
                           x_step: int,
-                          dot_map: Dict[int, int]) -> List[str]:
+                          dot_map: List[List[int]]) -> List[str]:
     output_lines: List[str] = []
     for y_pos in range(0, len(binary_matrix), y_step):
         output_line: str = ""
@@ -31,6 +34,7 @@ def _braille_create_lines(binary_matrix,
         output_lines.append(output_line)
     return output_lines
 
+
 # The Unicode braille character has a pattern, that, from the
 # base U+2800 (hex), each "dot" can be activated by adding:
 # 1   8
@@ -44,23 +48,32 @@ _BRAILLE_DOT_MAP: List[List[int]] = [
     [0x40, 0x80]
 ]
 
-def _braille(binary_matrix, height_per_char, blank_substitution=None) -> List[str]:
-    braille_text = _braille_create_lines(binary_matrix, height_per_char, 2, _BRAILLE_DOT_MAP)
+
+def _braille(binary_matrix,
+             height_per_char,
+             blank_substitution=None) -> List[str]:
+    braille_text = _braille_create_lines(binary_matrix, height_per_char,
+                                         2, _BRAILLE_DOT_MAP)
     if blank_substitution is not None:
-        braille_text = [line.replace(chr(_BRAILLE_BASE), blank_substitution) for line in braille_text]
+        braille_text = [line.replace(chr(_BRAILLE_BASE), blank_substitution)
+                        for line in braille_text]
     return braille_text
+
 
 @output("Braille (3x2 grid)")
 def braille_3x2(binary_matrix, blank_substitution=None) -> List[str]:
     return _braille(binary_matrix, 3, blank_substitution)
 
+
 @output("Braille (4x2 grid)")
 def braille_4x2(binary_matrix, blank_substitution=None) -> List[str]:
     return _braille(binary_matrix, 4, blank_substitution)
 
+
 def output_function(name):
     function, _desc = _OUTPUT_FUNCTION_MAP[name]
     return function
+
 
 def available_output_functions():
     return list(_OUTPUT_FUNCTION_MAP.items())
