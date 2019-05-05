@@ -32,6 +32,15 @@ class TestBraille3x2(unittest.TestCase):
         self.assertEqual(output[0][0], 'X')
         self.assertNotEqual(output[0][1], 'X')
 
+    def test_via_output_function(self):
+        input_matrix = np.array([
+            [True, True, True, True]
+        ])
+        output_fn = output_function("braille_3x2")
+        output = output_fn(input_matrix)
+        self.assertEqual(len(output), 1)
+        self.assertEqual(output[0], "⠉⠉")
+
 class TestBraille4x2(unittest.TestCase):
     def test_single_line(self):
         input_matrix = np.array([
@@ -63,6 +72,15 @@ class TestBraille4x2(unittest.TestCase):
         self.assertEqual(len(output), 1)
         self.assertEqual(output[0][0], 'X')
         self.assertNotEqual(output[0][1], 'X')
+    
+    def test_via_output_function(self):
+        input_matrix = np.array([
+            [True, True, True, True]
+        ])
+        output_fn = output_function("braille_4x2")
+        output = output_fn(input_matrix)
+        self.assertEqual(len(output), 1)
+        self.assertEqual(output[0], "⠉⠉")
 
 if __name__ == "__main__":
     unittest.main()

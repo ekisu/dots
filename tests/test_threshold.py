@@ -1,5 +1,5 @@
 import unittest
-from dots.threshold import simple, otsu, adaptive_gaussian
+from dots.threshold import simple, otsu, adaptive_gaussian, threshold_function
 import numpy as np
 
 class TestSimpleThreshold(unittest.TestCase):
@@ -15,6 +15,14 @@ class TestSimpleThreshold(unittest.TestCase):
         output = simple(image, point = 128)
         self.assertTrue((output == [
             [False, False, False, True]
+        ]).all())
+    
+    def test_via_threshold_function(self):
+        image = np.array([[0, 127, 128, 255]], dtype=np.uint8)
+        threshold_fn = threshold_function("simple")
+        output = threshold_fn(image)
+        self.assertTrue((output == [
+            [False, False, True, True]
         ]).all())
 
 class TestOtsuThreshold(unittest.TestCase):
@@ -33,11 +41,27 @@ class TestOtsuThreshold(unittest.TestCase):
         output = otsu(image)
         self.assertTrue((output[0] == False).all())
         self.assertTrue((output[1] == True).all())
+    
+    def test_via_threshold_function(self):
+        image = np.array([[0, 127, 255]], dtype=np.uint8)
+        threshold_fn = threshold_function("otsu")
+        output = threshold_fn(image)
+        # The middle point value doesn't really matter...
+        self.assertFalse(output[0][0] == True)
+        self.assertTrue(output[0][2] == True)
 
 class TestAdaptiveGaussianThreshold(unittest.TestCase):
     def test_basic(self):
         image = np.array([[0, 255]], dtype=np.uint8)
         output = adaptive_gaussian(image)
+        self.assertTrue((output == [
+            [False, True]
+        ]).all())
+    
+    def test_via_threshold_function(self):
+        image = np.array([[0, 255]], dtype=np.uint8)
+        threshold_fn = threshold_function("adaptive_gaussian")
+        output = threshold_fn(image)
         self.assertTrue((output == [
             [False, True]
         ]).all())
