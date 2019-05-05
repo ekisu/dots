@@ -37,9 +37,3 @@ class ImageLoader(object):
         
         return self.image[:,:,3] < transparency_threshold
 
-def resize_with_factor(image, factor):
-    if factor == 1:
-        return image
-    
-    return cv2.resize(image, None, fx = factor, fy = factor)
-
