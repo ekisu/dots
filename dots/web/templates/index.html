@@ -1,25 +1,30 @@
 {% extends 'base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='bulma-slider.min.css') }}">
+<script defer src="{{ url_for('static', filename='index.js') }}"></script>
+{% endblock %}
+
 {% block title %}Home{% endblock %}
 
 {% block content %}
 <section class="hero is-fullheight">
     <div class="hero-body">        
-        <div class="container has-text-centered">
+        <div class="container has-text-centered" id="main">
             <h1 class="title">dots.</h1>
             <h2 class="subtitle">Convert any image into a braille text representation!</h2>
 
             <div class="columns">
                 <div class="column">
-                    <textarea class="textarea" rows="15"></textarea>
+                    <textarea class="textarea" rows="15" v-model="output"></textarea>
                 </div>
                 <div class="column is-narrow">
-                    <form action="{{ url_for('routes.convert') }}" method="POST" enctype="multipart/form-data">
+                    <form @submit="submit">
                         <div class="field">
                             <div class="control is-expanded">
                                 <div class="file is-centered">
                                     <label class="file-label">
-                                        <input class="file-input" type="file" name="image">
+                                        <input class="file-input" type="file" @change="handleFile">
                                         <span class="file-cta">
                                             <span class="file-icon">
                                                 <i class="fas fa-upload"></i>
@@ -37,7 +42,8 @@
                             <label class="label">Threshold function</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
-                                    <select name="threshold_function">
+                                    <select v-model="threshold_function">
+                                        <option disabled value="">Select one...</option>
                                         {% for func_name, (_, func_desc) in threshold_functions %}
                                         <option value="{{ func_name }}">{{ func_desc }}</option>
                                         {% endfor %}
@@ -50,7 +56,8 @@
                             <label class="label">Output function</label>
                             <div class="control is-expanded">
                                 <div class="select is-fullwidth">
-                                    <select name="output_function">
+                                    <select v-model="output_function">
+                                        <option disabled value="">Select one...</option>
                                         {% for func_name, (_, func_desc) in output_functions %}
                                         <option value="{{ func_name }}">{{ func_desc }}</option>
                                         {% endfor %}
@@ -62,13 +69,26 @@
                         <div class="field">
                             <label class="label">Resize factor</label>
                             <div class="control is-expanded">
-                                <input class="is-fullwidth" type="range" name="resize_factor">
+                                <input class="input is-fullwidth"
+                                    type="number" max="2" min="0.1" step="0.1"
+                                    v-model.number="resize_factor">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control is-expanded">
+                                <label class="checkbox">
+                                <input type="checkbox" v-model="invert">
+                                Invert
+                                </label>
                             </div>
                         </div>
                         
                         <div class="field">
                             <div class="control has-text-centered">
-                                <button type="submit" class="button is-primary">Submit!</button>
+                                <button type="submit"
+                                    class="button is-primary"
+                                    v-bind:disabled="!canSubmit">Submit!</button>
                             </div>
                         </div>
                     </form>
