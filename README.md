@@ -15,7 +15,7 @@ Install the project requirements:
 (venv) foo@bar:~/dots$ pip install -r requirements.txt
 ```
 
-## Usage
+## Usage (CLI)
 
 Run the program with:
 ```console
@@ -23,6 +23,15 @@ Run the program with:
 ```
 
 It will output the braille representation to stdout.
+
+## Usage (Web interface)
+
+You can also run it via a Web interface, with:
+```console
+(venv) foo@bar:~/dots$ FLASK_APP=dots.web flask run
+```
+
+It will be available at http://localhost:5000/
 
 ## Example
 
