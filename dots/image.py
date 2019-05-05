@@ -9,13 +9,13 @@ class ImageLoader(object):
         self.image = image
     
     @classmethod
-    def from_path(cls, path: Path):
+    def from_path(cls, path: Path) -> 'ImageLoader':
         image = cv2.imread(path.resolve().as_posix(), cv2.IMREAD_UNCHANGED)
         return cls(image)
     
     @classmethod
-    def from_bytes(cls, bytes):
-        data_array = np.asarray(bytearray(bytes), dtype=np.uint8)
+    def from_bytes(cls, bytes_: bytes) -> 'ImageLoader':
+        data_array = np.asarray(bytearray(bytes_), dtype=np.uint8)
         try:
             image = cv2.imdecode(data_array, cv2.IMREAD_UNCHANGED)
             return cls(image)
@@ -30,7 +30,7 @@ class ImageLoader(object):
     def as_grayscale(self):
         return cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
     
-    def transparency_mask(self, transparency_threshold = 127):
+    def transparency_mask(self, transparency_threshold: int = 127):
         w, h, channels = self.image.shape
         if channels < 4: # No alpha channel?
             return np.full((w, h), True)
