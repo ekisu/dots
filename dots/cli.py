@@ -78,11 +78,11 @@ def create_argument_parser() -> ArgumentParser:
 
 def main(image_path: Path,
          resize_factor: float,
-         threshold: Callable[[int], Any],
+         threshold: Callable[..., Any],
          threshold_args: FunctionArgs,
          invert: bool,
          no_transparency_mask: bool,
-         output: Callable[[Any], List[str]],
+         output: Callable[..., List[str]],
          output_args: FunctionArgs):
     loader = ImageLoader.from_path(image_path)
     loader.resize_with_factor(resize_factor)
