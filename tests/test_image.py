@@ -48,5 +48,9 @@ class TestImageLoader(unittest.TestCase):
         ], dtype=np.uint8)
         self.assertTrue((image.as_grayscale() == expected_grayscale).all())
 
+    def test_empty_from_bytes(self):
+        with self.assertRaises(RuntimeError):
+            ImageLoader.from_bytes(b"")
+
 if __name__ == "__main__":
     unittest.main()

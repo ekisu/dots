@@ -16,8 +16,11 @@ class ImageLoader(object):
     @classmethod
     def from_bytes(cls, bytes):
         data_array = np.asarray(bytearray(bytes), dtype=np.uint8)
-        image = cv2.imdecode(data_array, cv2.IMREAD_UNCHANGED)
-        return cls(image)
+        try:
+            image = cv2.imdecode(data_array, cv2.IMREAD_UNCHANGED)
+            return cls(image)
+        except cv2.error:
+            raise RuntimeError("Failed to decode bytes")
     
     def resize_with_factor(self, factor: float):
         if factor == 1:
