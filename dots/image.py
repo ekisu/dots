@@ -1,13 +1,14 @@
 from pathlib import Path
 import numpy as np
 import cv2
+from typing import Any
 
 
 class ImageLoader(object):
     def __init__(self, image):
         if isinstance(image, type(None)):
             raise RuntimeError("image == None")
-        self.image = image
+        self.image: Any = image
 
     @classmethod
     def from_path(cls, path: Path) -> 'ImageLoader':
